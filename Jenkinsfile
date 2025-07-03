@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                git url: 'https://github.com/pongpat2520/testweb2.git'
+                git url: 'https://github.com/pongpat2520/testweb2.git' , branch: 'main'
             }
         }
 

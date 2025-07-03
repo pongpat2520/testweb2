@@ -19,14 +19,18 @@ pipeline {
         }
 
         stage('Deploy') {
-            steps {
-                sh '''
-                    docker stop web-simple || true
-                    docker rm web-simple || true
-                    docker run -d --name web-simple -p 8888:80 \
-                        -v $PWD:/usr/share/nginx/html:ro nginx
-                '''
-            }
+    steps {
+        sh '''
+            docker stop web-simple || true
+            docker rm web-simple || true
+
+            # รัน nginx ก่อน (โดยยังไม่มีไฟล์)
+            docker run -d --name web-simple -p 8888:80 nginx
+
+            # คัดลอก index.html จาก Jenkins workspace เข้า nginx container
+            docker cp index.html web-simple:/usr/share/nginx/html/index.html
+        '''
+    }
         }
     }
 }
